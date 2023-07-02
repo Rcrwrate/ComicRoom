@@ -1,6 +1,6 @@
 const WebSocketServer = require("ws").Server
 
-const wss = new WebSocketServer({ port: 8081 })
+const wss = new WebSocketServer({ port: 8080 })
 
 var rooms = {}
 var clients = {}
@@ -37,6 +37,7 @@ wss.on("connection", function (ws, msg) {
                         role = "Master"
                         var key = getRandomString(10)
                         msg.room.key = key
+                        msg.room.role = role
                         send(JSON.stringify(msg))
                         rooms[msg.room.id] = msg.room
                         rooms[msg.room.id].Master = WSID
@@ -44,12 +45,15 @@ wss.on("connection", function (ws, msg) {
                         rooms[msg.room.id].expire = new Date().valueOf()
                     } else if (msg.room.key == undefined && role == "User") {   //    Join Room
                         rooms[msg.room.id].User.push(WSID)
+                        msg.room.role = role
                         send(JSON.stringify(msg))
                     } else if (rooms[msg.room.id].key == msg.room.key) {    //  Reconnect init
                         role = "Master"
+                        msg.room.role = role
                         rooms[msg.room.id].Master = WSID
                         send(JSON.stringify(msg))
                     } else {                        //  faild Reconnect init
+                        init = false
                         send(JSON.stringify({ "type": "error", "error": "The room key is incorrect" }))
                     }
                     break

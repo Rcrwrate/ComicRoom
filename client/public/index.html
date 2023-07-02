@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="utf-8">
+  <link rel="icon" type="image/ico" href="https://static.deception.world/https://d.sirin.top/tmp_crop_decode.jpg">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+  <meta name="renderer" content="webkit" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0,maximum-scale=5.0">
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <title>放映厅</title>
+  <meta name="description" content="currentItem.description" />
+  <link rel="preconnect" href="//static.deception.world/">
+  <!-- <link rel="preconnect" href="//fastly.jsdelivr.net"> -->
+  <link rel="stylesheet" href="https://static.deception.world/https://fastly.jsdelivr.net/npm/mdui@1.0.2/dist/css/mdui.min.css" />
+  <link rel="stylesheet" href="https://static.deception.world/https://d.sirin.top/api/index.css">
+  <script src="https://static.deception.world/https://fastly.jsdelivr.net/npm/mdui@1.0.2/dist/js/mdui.min.js"></script>
+  <script src="https://static.deception.world/https://d.sirin.top/api/index.js"></script>
+
+<body class="
+    mdui-drawer-body-left
+    mdui-appbar-with-toolbar
+    mdui-theme-primary-indigo
+    mdui-theme-accent-pink
+    mdui-theme-layout-dark" id="p-d">
+  <script>
+    function getCookie(name) {
+      var arr = document.cookie.match(new RegExp("(^| )" + name + "=([^;]*)(;|$)"));
+      if (arr != null) return (arr[2]); return null;
+
+    }
+    function change_color() {
+      document.body.classList.remove("mdui-theme-primary-indigo")
+      document.body.classList.remove("mdui-theme-accent-pink")
+      document.body.classList.remove("mdui-theme-layout-dark")
+      document.body.classList.add("mdui-theme-layout-" + getCookie("docs-theme-layout"));
+      document.body.classList.add("mdui-theme-primary-" + getCookie("docs-theme-primary"));
+      document.body.classList.add("mdui-theme-accent-" + getCookie("docs-theme-accent"));
+    }
+    (function color() { change_color(); }());
+  </script>
+
+
+  <header class="appbar mdui-appbar mdui-appbar-fixed">
+    <div class="mdui-toolbar mdui-color-theme">
+      <span class="mdui-btn mdui-btn-icon mdui-ripple mdui-ripple-white"
+        mdui-drawer="{target: '#main-drawer', swipe: true}">
+        <i class="mdui-icon material-icons">menu</i>
+      </span>
+      <a href="/" class="mdui-typo-headline mdui-hidden-xs">放映厅</a>
+      <a data-page="API/" class="mdui-typo-title ajax">API</a>
+      <div class="mdui-toolbar-spacer"></div>
+      <span class="mdui-btn mdui-btn-icon mdui-ripple mdui-ripple-white" mdui-dialog="{target: '#dialog-docs-theme'}"
+        mdui-tooltip="{content: '设置主题'}">
+        <i class="mdui-icon material-icons">color_lens</i>
+      </span>
+    </div>
+  </header>
+  <div class="mdui-drawer" id="main-drawer">
+    <div class="mdui-list" mdui-collapse="{accordion: true}" style="margin-bottom: 76px;">
+    </div>
+  </div>
+  <div class="container p-index mdui-container" id="root">
+  </div>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <script>
+    var drawer = document.getElementsByClassName('mdui-list')[0];
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', '/api/Menu');
+    xhr.onload = function () {
+      if (xhr.status === 200) {
+        var datas = JSON.parse(xhr.responseText);
+        datas.forEach(function (data) {
+          var item = generateDrawerItem(data['icon'], data['title'], data['color'], data['items']);
+          drawer.appendChild(item);
+        })
+      }
+    }
+    xhr.send()
+    function generateDrawerItem(icon, title, color, items) {
+      // 创建折叠项
+      var collapseItem = document.createElement('div');
+      collapseItem.className = 'mdui-collapse-item';
+      // 创建折叠项头部
+      var header = document.createElement('div');
+      header.className = 'mdui-collapse-item-header mdui-list-item mdui-ripple';
+      // 创建图标
+      var iconEl = document.createElement('i');
+      iconEl.className = 'mdui-list-item-icon mdui-icon material-icons mdui-text-color-' + color;
+      iconEl.innerText = icon;
+      header.appendChild(iconEl);
+      // 创建标题
+      var titleEl = document.createElement('div');
+      titleEl.className = 'mdui-list-item-content';
+      titleEl.innerText = title;
+      header.appendChild(titleEl);
+      // 创建箭头图标
+      var arrowEl = document.createElement('i');
+      arrowEl.className = 'mdui-collapse-item-arrow mdui-icon material-icons';
+      arrowEl.innerText = 'keyboard_arrow_down';
+      header.appendChild(arrowEl);
+      collapseItem.appendChild(header);
+      // 创建折叠项内容
+      var body = document.createElement('div');
+      body.className = 'mdui-collapse-item-body mdui-list';
+      // 添加列表项
+      items.forEach(function (item) {
+        var listItem = document.createElement('a');
+        listItem.className = 'mdui-list-item mdui-ripple ajax';
+        if (item.ajax) {
+          listItem.dataset['page'] = item.href;
+        } else {
+          listItem.href = item.href;
+        }
+        listItem.innerText = item.label;
+        body.appendChild(listItem);
+      });
+      collapseItem.appendChild(body);
+      return collapseItem;
+    }
+    function copy(data) {
+      let input = document.createElement("input"); // 直接构建input
+      input.setAttribute("readonly", "readonly"); //设置只读，否则移动端会有键盘弹出
+      input.value = data; // 设置内容
+      document.body.appendChild(input); // 添加临时实例
+      input.select(); // 选择实例内容
+      document.execCommand("Copy"); // 执行复制
+      document.body.removeChild(input); // 删除临时实例
+      // this.$message.success("复制成功");
+    }
+    function copy_link(type) {
+      if (type == 1) {
+        var urlbase = 'https://service-av2jrwkk-1258642780.hk.apigw.tencentcs.com';
+        url = urlbase + location.pathname + location.search;
+        url = urlbase + '/release/API/share?token=' + getCookie('token') + '&url=' + url;
+      };
+      if (type == 2) {
+        var urlbase = 'https://service-av2jrwkk-1258642780.hk.apigw.tencentcs.com';
+        if (location.search == '') { url = urlbase + location.pathname + '?share=' + getCookie('token'); }
+        else { url = urlbase + location.pathname + location.search + '&share=' + getCookie('token'); }
+      };
+      if (type == 3) {
+        var urlbase = 'https://api.phantom-sea-limited.ltd';
+        url = urlbase + location.pathname + location.search;
+        url = urlbase + '/release/API/share?token=' + getCookie('token') + '&url=' + url;
+      };
+      if (type == 4) {
+        var urlbase = 'https://api.phantom-sea-limited.ltd';
+        if (location.search == '') { url = urlbase + location.pathname + '?share=' + getCookie('token'); }
+        else { url = urlbase + location.pathname + location.search + '&share=' + getCookie('token'); }
+      };
+      copy(url);
+      mdui.alert('复制成功');
+    }
+  </script>
+  <button class="mdui-fab mdui-fab-fixed" mdui-dialog="{target: '#share'}" style="z-index: 1;"><i
+      class="mdui-icon material-icons">share</i></button>
+  <div class="mdui-dialog" id="share">
+    <div class="mdui-tab mdui-tab-full-width" id="share-tab">
+      <a href="#share-tab1" class="mdui-ripple">分享到QQ</a>
+      <a href="#share-tab2" class="mdui-ripple">分享到其他</a>
+    </div>
+    <div id="share-tab1" class="mdui-p-a-2">
+      <div class="mdui-typo-title-opacity">能够直接在QQ或微信直接打开的链接</div>
+      <p>*链接较长，有效时间到当天0点为止</p>
+      <p>*分享链接的生成基于您本地的token，如果权限不正常或无权限，生成的分享链接也无权限</p>
+      <div class="mdui-typo-title-opacity">无限制链接
+        <button class="mdui-btn  mdui-btn-dense mdui-color-theme-accent mdui-ripple" onclick="copy_link(1)"
+          mdui-dialog-close>点击复制
+          <i class="mdui-icon material-icons">content_copy</i></button>
+      </div>
+      <p>*得到链接的人<mark>可以</mark>访问其他内容</p>
+      <div class="mdui-typo-title-opacity">有限制链接
+        <button class="mdui-btn  mdui-btn-dense mdui-color-theme-accent mdui-ripple" onclick="copy_link(2)"
+          mdui-dialog-close>点击复制
+          <i class="mdui-icon material-icons">content_copy</i></button>
+      </div>
+      <p>*得到链接的人<mark>只能</mark>访问该链接</p>
+    </div>
+    <div id="share-tab2" class="mdui-p-a-2">
+      <div class="mdui-typo-title-opacity">正常链接</div>
+      <p>*链接长度正常，有效时间到当天0点为止</p>
+      <p>*分享链接的生成基于您本地的token，如果权限不正常或无权限，生成的分享链接也无权限</p>
+      <div class="mdui-typo-title-opacity">无限制链接
+        <button class="mdui-btn  mdui-btn-dense mdui-color-theme-accent mdui-ripple" onclick="copy_link(3)"
+          mdui-dialog-close>点击复制
+          <i class="mdui-icon material-icons">content_copy</i></button>
+      </div>
+      <p>*得到链接的人<mark>可以</mark>访问其他内容</p>
+      <div class="mdui-typo-title-opacity">有限制链接
+        <button class="mdui-btn  mdui-btn-dense mdui-color-theme-accent mdui-ripple" onclick="copy_link(4)"
+          mdui-dialog-close>点击复制
+          <i class="mdui-icon material-icons">content_copy</i></button>
+      </div>
+      <p>*得到链接的人<mark>只能</mark>访问该链接</p>
+    </div>
+  </div>
+
+  <script>
+    var $ = mdui.$;
+    var tab = new mdui.Tab('#share-tab');
+    $('#share').on('open.mdui.dialog', function () {
+      tab.handleUpdate();
+    });
+  </script>
+
+
+  <div class="footer-nav mdui-color-theme" style="z-index:0 ;">
+    <div class="mdui-container">
+      <div class="mdui-row">
+        <div class="mdui-col-xs-2 mdui-col-sm-6 footer-nav-left"></div>
+        <a href="//app.phantom-sea-limited.ltd"
+          class="mdui-ripple mdui-color-theme mdui-col-xs-10 mdui-col-sm-6 footer-nav-right">
+          <div class="footer-nav-text">
+            <i class="mdui-icon material-icons">arrow_forward</i>
+            <span class="footer-nav-direction">© 2019-2023</span>
+            <div class="footer-nav-chapter">幻海实验室</div>
+          </div>
+        </a>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>
