@@ -53,7 +53,6 @@ function LeaveRoom({ ws, Auto }) {
             Auto(ws)
         }}>润润润!(离开房间)</button>
     )
-
 }
 
 export { Room, LeaveRoom }

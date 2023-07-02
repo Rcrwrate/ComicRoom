@@ -14,6 +14,16 @@ const App = () => {
   const [ws, setWs] = useState({ 'Init': null, 'setting': null, 'roomid': null });
   const [auto, setAuto] = useState(false);
 
+  /**
+   * 用于暴力强制React刷新渲染，顺手保存一下ws
+   * 
+   * 之前的设计是遇到需要刷新渲染的地方就直接设置一个新的变量和控制器来刷新
+   * 
+   * 这点性能消耗应该不是问题(暴论)
+   *
+   * @param {type} ws
+   * @return {null} 
+   */
   const Auto = (ws) => {
     setAuto(!auto)
     setWs(ws)
