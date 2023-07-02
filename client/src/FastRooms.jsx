@@ -15,6 +15,7 @@ const RoomSelector = ({ rooms, ws }) => {
 
         if (roomKey) {
             ws.room(roomId, "public", roomKey)
+            // ws.auto(ws)
         }
     };
 

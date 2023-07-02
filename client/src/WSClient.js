@@ -8,20 +8,29 @@ class WS {
     roomid = null
     roomkey = null
     role = null
+    setting = null
 
-    constructor(initcallback = (e) => { }, failcallback = (e) => { }) {
+    constructor(auto = (e) => { }, error = (e) => { }) {
         this.ws = new WebSocket(config.wsUrl)
         this.ws.addEventListener("message", this.onmessage)
         this.history = WS.localconfig("history")
         if (this.history == null) {
             this.history = {}
         }
-        this.initcallback = initcallback
-        this.failcallback = failcallback
+        this.auto = auto
+        this.error = error
     }
 
     send(msg) {
-        this.ws.send(JSON.stringify(msg))
+        try {
+            this.ws.send(JSON.stringify(msg))
+            this.showError(null)
+        } catch (e) {
+            if (e.message == "Failed to execute 'send' on 'WebSocket': Still in CONNECTING state.") {
+                this.showError("你先别急，连接尚未建立")
+            }
+            console.log(e.message)
+        }
     }
 
     //使用箭头函数或绑定函数来确保this指向正确的对象
@@ -37,13 +46,34 @@ class WS {
                     this.role = msg.room.role
                     if (msg.room.key != undefined) { this.addhistory(msg.room.id, msg.room.key) }
                 }
-                this.initcallback(this)
+                setTimeout(() => { this.fetch() }, 1000)
+                this.auto(this)
                 break
+            case "fetch":
+                this.setting = msg.config
+                this.auto(this)
             case "error":
                 this.showError(msg.error)
                 break
             default:
                 break
+        }
+    }
+
+    config(url, syncTime, maxTime) {
+        this.setting = { "url": url, "syncTime": syncTime, "maxTime": maxTime }
+        this.send({ "type": "push", "config": this.setting })
+        this.auto(this)
+    }
+
+    fetch() {
+        if (this.Init == true) {
+            if (this.role != "Master" && this.setting == null) {
+                this.send({ "type": "fetch" })
+                setTimeout(() => { this.fetch() }, 1000)
+            }
+        } else {
+            setTimeout(() => { this.fetch() }, 1000)
         }
     }
 
@@ -81,7 +111,7 @@ class WS {
 
     showError(msg) {
         console.log(msg)
-        this.failcallback(msg)
+        this.error(msg)
     }
 
     renew() {
@@ -89,6 +119,7 @@ class WS {
         this.roomid = null
         this.roomkey = null
         this.role = null
+        this.setting = null
         this.ws.close()
         this.ws = new WebSocket(config.wsUrl)
         this.ws.addEventListener("message", this.onmessage)

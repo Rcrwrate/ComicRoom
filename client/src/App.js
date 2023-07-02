@@ -9,17 +9,19 @@ import './console.css'
 
 
 const App = () => {
-  const [InRoom, setInRoom] = useState(false)
   const [Error, setError] = useState(null)
   const [Rooms, setRooms] = useState({})
-  const [ws, setWs] = useState({ 'init': null });
+  const [ws, setWs] = useState({ 'Init': null, 'setting': null, 'roomid': null });
+  const [auto, setAuto] = useState(false);
+
+  const Auto = (ws) => {
+    setAuto(!auto)
+    setWs(ws)
+  }
 
 
   useEffect(() => {
-    const ws = new WS(
-      (ws) => { console.log(ws); setInRoom(true); setError(null) },
-      (msg) => { setError(msg) }
-    )
+    const ws = new WS(Auto, setError)
     setWs(ws)
     setRooms(ws.history)
     return () => { ws.ws.close() }
@@ -30,9 +32,11 @@ const App = () => {
   return (
     <div>
       <h1 className='title mdui-text-color-theme'>放映厅  {ws.roomid}</h1>
-      {InRoom ? <></> : <Room ws={ws} Rooms={Rooms} />}
-      {ws.role == "Master" ? <ConfigUI /> : <></>}
-      {ws.role == "User" ? <Waiting /> : <></>}
+      {auto ? <></> : <></>}
+      {ws.Init ? <></> : <Room ws={ws} Rooms={Rooms} />}
+      {ws.setting != null ? <Video videoUrl={ws.setting.url} /> : <></>}
+      {ws.role == "Master" ? <ConfigUI ws={ws} Auto={Auto} /> : <></>}
+      {ws.role == "User" && ws.setting == null ? <Waiting /> : <></>}
       {Error
         ? <>
           <br></br>
@@ -42,7 +46,7 @@ const App = () => {
         </>
         : <></>
       }
-      {InRoom ? <LeaveRoom ws={ws} setWs={setWs} setInRoom={setInRoom} /> : <></>}
+      {ws.Init ? <LeaveRoom ws={ws} Auto={Auto} /> : <></>}
     </div>
   );
 };

@@ -45,12 +45,12 @@ function Room({ ws, Rooms }) {
     );
 }
 
-function LeaveRoom({ ws, setWs, setInRoom }) {
+function LeaveRoom({ ws, Auto }) {
     return (
         <button class="mdui-btn mdui-btn-block mdui-btn-raised mdui-ripple mdui-color-theme-accent" onClick={() => {
             ws.renew()
-            setWs(ws)
-            setInRoom(false)
+            ws.showError(null)
+            Auto(ws)
         }}>润润润!(离开房间)</button>
     )
 

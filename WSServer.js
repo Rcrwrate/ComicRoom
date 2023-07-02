@@ -72,6 +72,21 @@ wss.on("connection", function (ws, msg) {
                         })
                     }
                     break
+                case "fetch":
+                    if (rooms[ID].config != undefined) {
+                        send(JSON.stringify({ "type": "fetch", "config": rooms[ID].config }))
+                    }
+                case "push":
+                    if (role == "Master") {
+                        rooms[ID].config = msg.config
+                        msg = JSON.stringify({ "type": "fetch", "config": rooms[ID].config })
+                        rooms[ID].User.forEach(client => {
+                            if (client != WSID) {
+                                clients[client](msg)
+                            }
+                        })
+                    }
+                    break
                 case "debug":
                     console.log(rooms)
                     console.log(clients)

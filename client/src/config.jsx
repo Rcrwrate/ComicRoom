@@ -1,10 +1,29 @@
 import mdui from 'mdui';
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState } from 'react';
 
-function ConfigUI({ ws }) {
+function ConfigUI({ ws, Auto }) {
     const [url, seturl] = useState(null)
     const [Sync, setSync] = useState(5)
     const [Max, setMax] = useState(15)
+
+    function isURLValid(url) {
+        try {
+            const urlObject = new URL(url);
+            return urlObject.href === urlObject.href;
+        } catch (err) {
+            return false;
+        }
+    }
+
+    function push_config() {
+        if (!isURLValid(url)) {
+            ws.showError("视频地址异常")
+        } else {
+            ws.showError(null)
+            ws.config(url, Sync, Max)
+            Auto(ws)
+        }
+    }
 
 
 
@@ -22,7 +41,7 @@ function ConfigUI({ ws }) {
             <div className="mdui-panel-item">
                 <div className="mdui-panel-item-header">
                     <div className="mdui-panel-item-title">视频设置</div>
-                    <div className="mdui-panel-item-summary">Carribean cruise</div>
+                    {/* <div className="mdui-panel-item-summary">Carribean cruise</div> */}
                     <i className="mdui-panel-item-arrow mdui-icon material-icons">
                         keyboard_arrow_down
                     </i>
@@ -38,6 +57,7 @@ function ConfigUI({ ws }) {
                                 name="token"
                                 id="token"
                                 onChange={(e) => { seturl(e.target.value) }}
+                                required
                             />
                         </div>
                     </form>
@@ -45,7 +65,7 @@ function ConfigUI({ ws }) {
                         <button className="mdui-btn mdui-ripple" mdui-panel-item-close="">
                             cancel
                         </button>
-                        <button className="mdui-btn mdui-ripple">save</button>
+                        <button className="mdui-btn mdui-ripple" onClick={push_config}>save</button>
                     </div>
                 </div>
             </div>
@@ -69,7 +89,7 @@ function ConfigUI({ ws }) {
                         <button className="mdui-btn mdui-ripple" mdui-panel-item-close="">
                             cancel
                         </button>
-                        <button className="mdui-btn mdui-ripple">save</button>
+                        <button className="mdui-btn mdui-ripple" onClick={push_config}>save</button>
                     </div>
                 </div>
             </div>
