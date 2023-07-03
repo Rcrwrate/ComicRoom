@@ -55,6 +55,9 @@ class WS {
             case "error":
                 this.showError(msg.error)
                 break
+            case "sync":
+                this.sync(msg)
+                break
             default:
                 break
         }
@@ -97,6 +100,34 @@ class WS {
         }
     }
 
+    install(player) {
+        this.player = player
+    }
+    sync(msg) {
+        if (this.player != undefined) {
+            switch (msg.info) {
+                case "update":
+                    var T = msg.data.time + (new Date().valueOf() - msg.data.now) / 1000 - this.player.video.currentTime
+                    console.log(T)
+                    if (msg.data.paused != this.player.paused && this.fixing == undefined) { this.player._toggle() }
+                    if (this.fixing && (T < this.setting.syncTime || T > -this.setting.syncTime)) { this.fixing = undefined; this.player._play() }
+                    if (msg.data.speed != this.player.video.playbackRate) { this.player._speed(msg.data.speed) }
+                    if (T > this.setting.maxTime || T < -this.setting.maxTime) {
+                        this.player._seek(msg.data.time + this.setting.maxTime)
+                        this.player._pause()
+                        this.player.notice("播放误差时间超过了最大允许时间,正在对轴")
+                        this.fixing = true
+                    }
+            }
+        }
+    }
+
+    update(player) {
+        this.send({
+            "type": "sync", "info": "update", "data": { "time": player.video.currentTime, "now": new Date().valueOf(), "paused": player.paused, "ended": player.video.ended, "speed": player.video.playbackRate }
+        })
+    }
+
     addhistory(id, key) {
         this.history[id] = key
         WS.localconfig("history", this.history)
@@ -111,7 +142,7 @@ class WS {
     }
 
     showError(msg) {
-        console.log(msg)
+        if (msg != null) { console.log(msg) }
         this.error(msg)
     }
 

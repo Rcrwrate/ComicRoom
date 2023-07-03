@@ -44,7 +44,7 @@ const App = () => {
       <h1 className='title mdui-text-color-theme'>放映厅  {ws.roomid}</h1>
       {auto ? <></> : <></>}
       {ws.Init ? <></> : <Room ws={ws} Rooms={Rooms} />}
-      {ws.setting != null ? <Video videoUrl={ws.setting.url} /> : <></>}
+      {ws.setting != null ? <Video ws={ws} /> : <></>}
       {ws.role == "Master" ? <ConfigUI ws={ws} Auto={Auto} /> : <></>}
       {ws.role == "User" && ws.setting == null ? <Waiting /> : <></>}
       {Error
