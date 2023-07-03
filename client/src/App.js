@@ -34,7 +34,7 @@ const App = () => {
     const ws = new WS(Auto, setError)
     setWs(ws)
     setRooms(ws.history)
-    return () => { ws.ws.close() }
+    return () => { ws.ws.onclose = null; ws.ws.close() }
   }, [])
 
 

@@ -10,7 +10,15 @@ wss.on("connection", function (ws, msg) {
     // console.debug(`[Connection]:\t`)
     // console.debug(msg)
 
-    var WSID = msg.headers["sec-websocket-key"]
+    var WSID
+    try {
+        WSID = ws.headers["sec-websocket-key"]
+    } catch (e) {
+        try {
+            WSID = ws.upgradeReq.rawHeaders[ws.upgradeReq.rawHeaders.indexOf("Sec-WebSocket-Key") + 1]
+        } catch (e) { WSID = getRandomString(10) }
+    }
+
     console.log(`[Opened ${WSID}]\t`)
     var role = "User"
     var ID

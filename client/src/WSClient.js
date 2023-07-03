@@ -1,5 +1,5 @@
 const config = {
-    wsUrl: "ws://localhost:8080"
+    wsUrl: "wss://124.222.180.82/comic"
 }
 
 
@@ -11,14 +11,19 @@ class WS {
     setting = null
 
     constructor(auto = (e) => { }, error = (e) => { }) {
-        this.ws = new WebSocket(config.wsUrl)
-        this.ws.addEventListener("message", this.onmessage)
+        this.init()
         this.history = WS.localconfig("history")
         if (this.history == null) {
             this.history = {}
         }
         this.auto = auto
         this.error = error
+    }
+
+    init() {
+        this.ws = new WebSocket(config.wsUrl)
+        this.ws.onmessage = this.onmessage
+        this.ws.onclose = this.onclose
     }
 
     send(msg) {
@@ -31,6 +36,14 @@ class WS {
             }
             console.log(e.message)
         }
+    }
+
+    onclose = (e) => {
+        this.init()
+        if (this.roomid != null) {
+            setTimeout(() => { this.room(this.roomid, "public", this.roomkey) }, 1000)
+        }
+        this.auto(this)
     }
 
     //使用箭头函数或绑定函数来确保this指向正确的对象
@@ -112,8 +125,8 @@ class WS {
                     if (msg.data.paused != this.player.paused && this.fixing == undefined) { this.player._toggle() }
                     if (this.fixing && (T < this.setting.syncTime || T > -this.setting.syncTime)) { this.fixing = undefined; this.player._play() }
                     if (msg.data.speed != this.player.video.playbackRate) { this.player._speed(msg.data.speed) }
-                    if (T > this.setting.maxTime || T < -this.setting.maxTime) {
-                        this.player._seek(msg.data.time + this.setting.maxTime)
+                    if ((T > this.setting.maxTime || T < -this.setting.maxTime) && this.player.video.networkState == 1) {
+                        this.player._seek(T + this.player.video.currentTime + this.setting.maxTime)
                         this.player._pause()
                         this.player.notice("播放误差时间超过了最大允许时间,正在对轴")
                         this.fixing = true
@@ -152,9 +165,9 @@ class WS {
         this.roomkey = null
         this.role = null
         this.setting = null
+        this.ws.onclose = null
         this.ws.close()
-        this.ws = new WebSocket(config.wsUrl)
-        this.ws.addEventListener("message", this.onmessage)
+        this.init()
     }
 
     static getRandomString(len) {
