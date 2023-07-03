@@ -28,10 +28,22 @@ function ConfigUI({ ws, Auto }) {
 
 
     useEffect(() => {
+        var setting = localStorage.getItem("setting")
+        var u = mdui.$("#token")[0]
         var s = mdui.$("#syncTime")[0]
         var m = mdui.$("#maxTime")[0]
-        s.value = Sync
-        m.value = Max
+        if (setting != null) {
+            setting = JSON.parse(setting)
+            seturl(setting.url)
+            setMax(setting.maxTime)
+            setSync(setting.syncTime)
+            u.value = setting.url
+            s.value = setting.syncTime
+            m.value = setting.maxTime
+        } else {
+            s.value = Sync
+            m.value = Max
+        }
         mdui.mutation();
         mdui.updateSliders()
     }, []);

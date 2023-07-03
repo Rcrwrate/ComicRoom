@@ -62,6 +62,7 @@ class WS {
 
     config(url, syncTime, maxTime) {
         this.setting = { "url": url, "syncTime": syncTime, "maxTime": maxTime }
+        WS.localconfig("setting", this.setting)
         this.send({ "type": "push", "config": this.setting })
         this.auto(this)
     }
