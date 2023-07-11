@@ -1,5 +1,6 @@
 const config = {
     wsUrl: "wss://124.222.180.82/comic"
+    // wsUrl: "ws://127.0.0.1:8080"
 }
 
 
@@ -71,13 +72,17 @@ class WS {
             case "sync":
                 this.sync(msg)
                 break
+            case "count":
+                if (this.player != undefined) {
+                    this.player.notice(`房间人数${msg.count}`)
+                }
             default:
                 break
         }
     }
 
-    config(url, syncTime, maxTime, player) {
-        this.setting = { "url": url, "syncTime": syncTime, "maxTime": maxTime, "player": player }
+    config(url, syncTime, maxTime, player, subtitles) {
+        this.setting = { "url": url, "syncTime": syncTime, "maxTime": maxTime, "player": player, "subtitles": subtitles }
         WS.localconfig("setting", this.setting)
         this.send({ "type": "push", "config": this.setting })
         this.auto(this)

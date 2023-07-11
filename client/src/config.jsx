@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 
 function ConfigUI({ ws, Auto }) {
     const [url, seturl] = useState(null)
+    const [subtitles, setsubtitles] = useState(null)
     const [Sync, setSync] = useState(5)
     const [Max, setMax] = useState(15)
     const [DP, setDP] = useState(false)
@@ -23,7 +24,7 @@ function ConfigUI({ ws, Auto }) {
             ws.showError(null)
             var player
             if (DP) { player = "DP" } else { player = "AP" }
-            ws.config(url, Sync, Max, player)
+            ws.config(url, Sync, Max, player, subtitles)
             Auto(ws)
         }
     }
@@ -33,17 +34,20 @@ function ConfigUI({ ws, Auto }) {
     useEffect(() => {
         var setting = localStorage.getItem("setting")
         var u = mdui.$("#token")[0]
+        var t = mdui.$("#subtitles")[0]
         var s = mdui.$("#syncTime")[0]
         var m = mdui.$("#maxTime")[0]
         if (setting != null && setting != "null") {
             setting = JSON.parse(setting)
             seturl(setting.url)
+            setsubtitles(setting.subtitles)
             setMax(setting.maxTime)
             setSync(setting.syncTime)
             setDP(setting.player == "DP")
             u.value = setting.url
             s.value = setting.syncTime
             m.value = setting.maxTime
+            t.value = setting.subtitles
         } else {
             s.value = Sync
             m.value = Max
@@ -77,17 +81,29 @@ function ConfigUI({ ws, Auto }) {
                             />
                         </div>
                         <br />
+                        <div className="mdui-textfield mdui-textfield-floating-label">
+                            <i class="mdui-icon material-icons">subtitles</i>
+                            <label className="mdui-textfield-label">字幕地址</label>
+                            <input
+                                className="mdui-textfield-input"
+                                type="text"
+                                name="subtitles"
+                                id="subtitles"
+                                onChange={(e) => { setsubtitles(e.target.value) }}
+                            />
+                        </div>
+                        <br />
                         <div class="mdui-row-md-4">
                             <div class="mdui-col">
                                 <label class="mdui-radio">
-                                    {DP ? <input type="radio" name="group1" checked onChange={(e) => { setDP(true) }} /> : <input type="radio" name="group1" onChange={(e) => { setDP(true) }} />}
+                                    {DP ? <input type="radio" name="group1" checked onClick={(e) => { setDP(true) }} /> : <input type="radio" name="group1" onClick={(e) => { setDP(true) }} />}
                                     <i class="mdui-radio-icon"></i>
                                     Dplayer
                                 </label>
                             </div>
                             <div class="mdui-col">
                                 <label class="mdui-radio">
-                                    {!DP ? <input type="radio" name="group1" checked onChange={(e) => { setDP(false) }} /> : <input type="radio" name="group1" onChange={(e) => { setDP(false) }} />}
+                                    {!DP ? <input type="radio" name="group1" checked onClick={(e) => { setDP(false) }} /> : <input type="radio" name="group1" onClick={(e) => { setDP(false) }} />}
                                     <i class="mdui-radio-icon"></i>
                                     ArtPlayer
                                 </label>
@@ -131,6 +147,8 @@ function ConfigUI({ ws, Auto }) {
 }
 
 function Sysytem() {
+    useEffect(() => { mdui.mutation() }, [])
+
     return <div className="mdui-panel mdui-panel-popout" mdui-panel="">
         <div className="mdui-panel-item">
             <div className="mdui-panel-item-header">

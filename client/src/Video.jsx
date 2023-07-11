@@ -46,13 +46,13 @@ const DP = ({ ws }) => {
                     this._pause();
                 }
             }
-            ws.install(player)
         } else {
             const update = () => { ws.update(player) }
             player.on("timeupdate", update)
             player.on("pause", update)
             player.on("play", update)
         }
+        ws.install(player)
         return () => {
             player.destroy();
         };
@@ -91,7 +91,7 @@ function AP({ ws }) {
             id: id,
             autoSize: true,
             playbackRate: ws.role == "Master",
-            setting: ws.role == "Master",
+            setting: true,
             isLive: ws.role == "User",
             hotkey: true,
             pip: true,
@@ -129,8 +129,14 @@ function AP({ ws }) {
                 // beforeEmit: (danmu) => !!danmu.text.trim(), // 发送弹幕前的自定义校验，返回 true 则可以发送
                 // 通过 mount 选项可以自定义输入框挂载的位置，默认挂载于播放器底部，仅在当宽度小于最小值时生效
                 // mount: document.querySelector('.artplayer-danmuku'),
-            }),]
+            }),],
+            // subtitle: {
+            //     url: ws.setting.subtitles
+            // }
         });
+        if (ws.setting.subtitles) {
+            player.subtitle.url = ws.setting.subtitles
+        }
 
         function notice(msg) {
             player.layers.notice.innerText = msg

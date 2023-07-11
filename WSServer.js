@@ -64,6 +64,19 @@ wss.on("connection", function (ws, msg) {
                         init = false
                         send(JSON.stringify({ "type": "error", "error": "The room key is incorrect" }))
                     }
+                    if (init) {
+                        if (rooms[ID].Master != undefined) {
+                            msg = JSON.stringify({ "type": "count", "count": rooms[ID].User.length + 1 })
+                        } else {
+                            msg = JSON.stringify({ "type": "count", "count": rooms[ID].User.length })
+                        }
+                        try { clients[rooms[ID].Master](msg) } catch { }
+                        rooms[ID].User.forEach(client => {
+                            if (client != WSID) {
+                                clients[client](msg)
+                            }
+                        })
+                    }
                     break
                 case "sync":
                     msg = JSON.stringify(msg)
@@ -120,6 +133,17 @@ wss.on("connection", function (ws, msg) {
                 rooms[ID].Master = undefined
             }
             delete clients[WSID]
+            if (rooms[ID].Master != undefined) {
+                msg = JSON.stringify({ "type": "count", "count": rooms[ID].User.length + 1 })
+            } else {
+                msg = JSON.stringify({ "type": "count", "count": rooms[ID].User.length })
+            }
+            try { clients[rooms[ID].Master](msg) } catch { }
+            rooms[ID].User.forEach(client => {
+                if (client != WSID) {
+                    clients[client](msg)
+                }
+            })
         }
         console.log(`[Closed ${WSID}]`)
     })
