@@ -1,0 +1,41 @@
+{
+  "files": {
+    "main.css": "/static/css/main.0884f438.css",
+    "main.js": "/static/js/main.d7eb5587.js",
+    "static/js/787.c4e7f8f9.chunk.js": "/static/js/787.c4e7f8f9.chunk.js",
+    "static/media/Roboto-BlackItalic.woff": "/static/media/Roboto-BlackItalic.358ab56556eca0b75d02.woff",
+    "static/media/Roboto-MediumItalic.woff": "/static/media/Roboto-MediumItalic.8be651082cc0d07c84f6.woff",
+    "static/media/Roboto-LightItalic.woff": "/static/media/Roboto-LightItalic.821fb0bb1ae8e8761798.woff",
+    "static/media/Roboto-RegularItalic.woff": "/static/media/Roboto-RegularItalic.33d48155cd9f38c64e71.woff",
+    "static/media/Roboto-BoldItalic.woff": "/static/media/Roboto-BoldItalic.d85436fa35b78a399a68.woff",
+    "static/media/Roboto-ThinItalic.woff": "/static/media/Roboto-ThinItalic.be84e94690a6a2d14048.woff",
+    "static/media/Roboto-Black.woff": "/static/media/Roboto-Black.82ada96d1354cece118c.woff",
+    "static/media/Roboto-Medium.woff": "/static/media/Roboto-Medium.eb797abfa6a5cca2463e.woff",
+    "static/media/Roboto-Regular.woff": "/static/media/Roboto-Regular.770a8fca674a3550e241.woff",
+    "static/media/Roboto-Light.woff": "/static/media/Roboto-Light.8dc942c71385e7509b87.woff",
+    "static/media/Roboto-Bold.woff": "/static/media/Roboto-Bold.8bd7856b64b4313341eb.woff",
+    "static/media/Roboto-Thin.woff": "/static/media/Roboto-Thin.9b3e35eb0a402cc52306.woff",
+    "static/media/Roboto-BlackItalic.woff2": "/static/media/Roboto-BlackItalic.6d1acccbf11ac5f449b8.woff2",
+    "static/media/Roboto-MediumItalic.woff2": "/static/media/Roboto-MediumItalic.113e7623163d4cb7f965.woff2",
+    "static/media/Roboto-LightItalic.woff2": "/static/media/Roboto-LightItalic.4b2a79f0765ff216b9a3.woff2",
+    "static/media/Roboto-RegularItalic.woff2": "/static/media/Roboto-RegularItalic.3a0ee5b0beec8d0ead13.woff2",
+    "static/media/Roboto-BoldItalic.woff2": "/static/media/Roboto-BoldItalic.f21b7e045fd077321cda.woff2",
+    "static/media/Roboto-ThinItalic.woff2": "/static/media/Roboto-ThinItalic.271f60b07567ee405bb4.woff2",
+    "static/media/Roboto-Black.woff2": "/static/media/Roboto-Black.bcccd7dfcdeddf586f5e.woff2",
+    "static/media/Roboto-Medium.woff2": "/static/media/Roboto-Medium.b92cc2170a4d5438fd3d.woff2",
+    "static/media/Roboto-Regular.woff2": "/static/media/Roboto-Regular.c065bd9fa03a7a797d95.woff2",
+    "static/media/Roboto-Light.woff2": "/static/media/Roboto-Light.3b9222bb69292e15261d.woff2",
+    "static/media/Roboto-Bold.woff2": "/static/media/Roboto-Bold.3b52bc86749058f144de.woff2",
+    "static/media/Roboto-Thin.woff2": "/static/media/Roboto-Thin.e11b2308d1ace9c25083.woff2",
+    "static/media/MaterialIcons-Regular.woff": "/static/media/MaterialIcons-Regular.83bebaf37c09c7e1c3ee.woff",
+    "static/media/MaterialIcons-Regular.woff2": "/static/media/MaterialIcons-Regular.cff684e59ffb052d72cb.woff2",
+    "index.html": "/index.html",
+    "main.0884f438.css.map": "/static/css/main.0884f438.css.map",
+    "main.d7eb5587.js.map": "/static/js/main.d7eb5587.js.map",
+    "787.c4e7f8f9.chunk.js.map": "/static/js/787.c4e7f8f9.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.0884f438.css",
+    "static/js/main.d7eb5587.js"
+  ]
+}

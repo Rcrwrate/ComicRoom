@@ -1,0 +1,76 @@
+[
+    {
+      "icon": "near_me",
+      "title": "开始使用",
+      "color": "blue",
+      "items": [
+        {
+          "label": "简介",
+          "href": "/release/API/",
+          "ajax": false
+        },
+        {
+          "label": "下载",
+          "href": "/release/API/download",
+          "ajax": false
+        }
+      ]
+    },
+    {
+      "icon": "layers",
+      "title": "API请求",
+      "color": "deep-orange",
+      "items": [
+        {
+          "label": "颜色与主题",
+          "href": "/release/API/",
+          "ajax": false
+        },
+        {
+          "label": "字体",
+          "href": "/release/API/",
+          "ajax": false
+        }
+      ]
+    },
+    {
+      "icon": "widgets",
+      "title": "可视化请求",
+      "color": "green",
+      "items": [
+        {
+          "label": "搜索",
+          "href": "/release/API/search",
+          "ajax": false
+        }
+      ]
+    },
+    {
+      "icon": "view_carousel",
+      "title": "其他",
+      "color": "brown",
+      "items": []
+    },
+    {
+      "icon": "settings",
+      "title": "设置",
+      "color": "grey",
+      "items": [
+        {
+          "label": "Token",
+          "href": "/release/API/token",
+          "ajax": false
+        },
+        {
+          "label": "预览设置",
+          "href": "/release/API/preview",
+          "ajax": false
+        },
+        {
+          "label": "用户中心",
+          "href": "/release/user/login",
+          "ajax": false
+        }
+      ]
+    }
+  ]
