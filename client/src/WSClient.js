@@ -76,8 +76,8 @@ class WS {
         }
     }
 
-    config(url, syncTime, maxTime) {
-        this.setting = { "url": url, "syncTime": syncTime, "maxTime": maxTime }
+    config(url, syncTime, maxTime, player) {
+        this.setting = { "url": url, "syncTime": syncTime, "maxTime": maxTime, "player": player }
         WS.localconfig("setting", this.setting)
         this.send({ "type": "push", "config": this.setting })
         this.auto(this)
@@ -122,7 +122,7 @@ class WS {
                 case "update":
                     var T = msg.data.time + (new Date().valueOf() - msg.data.now) / 1000 - this.player.video.currentTime
                     console.log(T)
-                    if (msg.data.paused != this.player.paused && this.fixing == undefined) { this.player._toggle() }
+                    if (msg.data.paused != this.player.video.paused && this.fixing == undefined) { this.player._toggle() }
                     if (this.fixing && (T < this.setting.syncTime || T > -this.setting.syncTime)) { this.fixing = undefined; this.player._play() }
                     if (msg.data.speed != this.player.video.playbackRate) { this.player._speed(msg.data.speed) }
                     if ((T > this.setting.maxTime || T < -this.setting.maxTime) && this.player.video.networkState == 1) {
@@ -137,7 +137,7 @@ class WS {
 
     update(player) {
         this.send({
-            "type": "sync", "info": "update", "data": { "time": player.video.currentTime, "now": new Date().valueOf(), "paused": player.paused, "ended": player.video.ended, "speed": player.video.playbackRate }
+            "type": "sync", "info": "update", "data": { "time": player.video.currentTime, "now": new Date().valueOf(), "paused": player.video.paused, "ended": player.video.ended, "speed": player.video.playbackRate }
         })
     }
 

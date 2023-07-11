@@ -5,6 +5,7 @@ function ConfigUI({ ws, Auto }) {
     const [url, seturl] = useState(null)
     const [Sync, setSync] = useState(5)
     const [Max, setMax] = useState(15)
+    const [DP, setDP] = useState(false)
 
     function isURLValid(url) {
         try {
@@ -20,7 +21,9 @@ function ConfigUI({ ws, Auto }) {
             ws.showError("视频地址异常")
         } else {
             ws.showError(null)
-            ws.config(url, Sync, Max)
+            var player
+            if (DP) { player = "DP" } else { player = "AP" }
+            ws.config(url, Sync, Max, player)
             Auto(ws)
         }
     }
@@ -32,11 +35,12 @@ function ConfigUI({ ws, Auto }) {
         var u = mdui.$("#token")[0]
         var s = mdui.$("#syncTime")[0]
         var m = mdui.$("#maxTime")[0]
-        if (setting != null) {
+        if (setting != null && setting != "null") {
             setting = JSON.parse(setting)
             seturl(setting.url)
             setMax(setting.maxTime)
             setSync(setting.syncTime)
+            setDP(setting.player == "DP")
             u.value = setting.url
             s.value = setting.syncTime
             m.value = setting.maxTime
@@ -71,6 +75,23 @@ function ConfigUI({ ws, Auto }) {
                                 onChange={(e) => { seturl(e.target.value) }}
                                 required
                             />
+                        </div>
+                        <br />
+                        <div class="mdui-row-md-4">
+                            <div class="mdui-col">
+                                <label class="mdui-radio">
+                                    {DP ? <input type="radio" name="group1" checked onChange={(e) => { setDP(true) }} /> : <input type="radio" name="group1" onChange={(e) => { setDP(true) }} />}
+                                    <i class="mdui-radio-icon"></i>
+                                    Dplayer
+                                </label>
+                            </div>
+                            <div class="mdui-col">
+                                <label class="mdui-radio">
+                                    {!DP ? <input type="radio" name="group1" checked onChange={(e) => { setDP(false) }} /> : <input type="radio" name="group1" onChange={(e) => { setDP(false) }} />}
+                                    <i class="mdui-radio-icon"></i>
+                                    ArtPlayer
+                                </label>
+                            </div>
                         </div>
                     </form>
                     <div className="mdui-panel-item-actions">
