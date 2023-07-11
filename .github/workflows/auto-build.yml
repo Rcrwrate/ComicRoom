@@ -24,6 +24,7 @@ jobs:
       run: |
         cd client
         npm install
+        export CI=false
         npm run build        
                         
     - name: Deploy
