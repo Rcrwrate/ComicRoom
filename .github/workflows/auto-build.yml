@@ -1,0 +1,37 @@
+name: auto-build
+on:                                 #在main分支上进行push时触发  
+  push:
+    branches:
+    - main
+    paths:
+    - 'client/**'
+
+jobs:
+  auto-build:
+    runs-on: ubuntu-latest
+        
+    steps:                          
+    - name: checkout main
+      uses: actions/checkout@v2
+      with:
+        ref: main
+            
+    - name: install nodejs
+      uses: actions/setup-node@v3.6.0
+      
+    - name: Build doc
+      run: |
+        cd client
+        npm install
+        npm run build        
+                        
+    - name: Deploy
+      uses: JamesIves/github-pages-deploy-action@3.7.1
+      with:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        BRANCH: gh-pages
+        FOLDER: client/build
+        BASE_BRANCH: main
+                
+                
+                
