@@ -1,5 +1,6 @@
 name: auto-build
-on:                                 #在main分支上进行push时触发  
+on:
+  workflow_dispatch:
   push:
     branches:
     - main

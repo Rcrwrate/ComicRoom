@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Video from './Video'
 import WS from './WSClient'
 import { Room, LeaveRoom } from './Room'
-import { ConfigUI, Waiting } from './config';
+import { ConfigUI, Waiting, Sysytem } from './config';
 import 'mdui/dist/css/mdui.min.css';
 import 'mdui/dist/js/mdui.min.js';
 import './console.css'
@@ -47,6 +47,7 @@ const App = () => {
       {ws.setting != null ? <Video ws={ws} /> : <></>}
       {ws.role == "Master" ? <ConfigUI ws={ws} Auto={Auto} /> : <></>}
       {ws.role == "User" && ws.setting == null ? <Waiting /> : <></>}
+      <Sysytem />
       {Error
         ? <>
           <br></br>

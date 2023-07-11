@@ -130,6 +130,22 @@ function ConfigUI({ ws, Auto }) {
     )
 }
 
+function Sysytem() {
+    return <div className="mdui-panel mdui-panel-popout" mdui-panel="">
+        <div className="mdui-panel-item">
+            <div className="mdui-panel-item-header">
+                <div className="mdui-panel-item-title">系统设置</div>
+                <i className="mdui-panel-item-arrow mdui-icon material-icons">
+                    keyboard_arrow_down
+                </i>
+            </div>
+            <div className="mdui-panel-item-body">
+                <p>暂无</p>
+            </div>
+        </div>
+    </div>
+}
+
 function Waiting() {
     return (
         <>
@@ -144,4 +160,4 @@ function Waiting() {
     )
 }
 
-export { ConfigUI, Waiting }
+export { ConfigUI, Waiting, Sysytem }
