@@ -107,7 +107,7 @@ class WS {
 
     danmu(msg) {
         if (this.Init != undefined) {
-            this.send({ "type": "sync", "info": msg })
+            this.send({ "type": "sync", "info": "danmu", "danmu": msg })
         } else {
             this.showError("初始化未完成!")
         }
@@ -131,6 +131,9 @@ class WS {
                         this.player.notice("播放误差时间超过了最大允许时间,正在对轴")
                         this.fixing = true
                     }
+                    break
+                case "danmu":
+                    this.player._danmu(msg.danmu)
             }
         }
     }
