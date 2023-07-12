@@ -8,6 +8,7 @@
     "@testing-library/user-event": "^13.5.0",
     "artplayer": "^5.0.9",
     "artplayer-plugin-danmuku": "^5.0.1",
+    "assjs": "^0.0.11",
     "dplayer": "^1.27.1",
     "mdui": "^1.0.2",
     "react": "^18.2.0",

@@ -2,6 +2,13 @@ import React, { useEffect, useRef, useState } from 'react';
 import DPlayer from 'dplayer';
 import Artplayer from 'artplayer';
 import artplayerPluginDanmuku from 'artplayer-plugin-danmuku';
+import ASS from 'assjs';
+
+async function subtitle(url) {
+    var r = await fetch(url)
+    return await r.text()
+    // return URL.createObjectURL(new Blob([r], { type: "text/plain" }))
+}
 
 const DP = ({ ws }) => {
     const playerRef = useRef(null);
@@ -53,12 +60,29 @@ const DP = ({ ws }) => {
             player.on("play", update)
         }
         ws.install(player)
+        if (ws.setting.subtitles) {
+            subtitle(ws.setting.subtitles).then((e) => {
+                // player.subtitle.url = e
+                if (window.ass) { window.ass.destroy() }
+                window.ass = new ASS(e, player.video, { container: player.video.parentElement, })
+                const resize = () => {
+                    document.getElementsByClassName("dplayer-video-wrap")[0].style.width = "100%"
+                    document.getElementsByClassName("dplayer-video-wrap")[0].style.height = ""
+                    document.getElementsByClassName("dplayer-video-wrap")[0].style.aspectRatio = "16/9"
+                    window.ass.resize()
+                }
+                player.on("resize", () => {
+                    setTimeout(resize, 300)
+                    setTimeout(resize, 1000)
+                })
+            })
+        }
         return () => {
             player.destroy();
         };
     }, [ws.setting.url]);
 
-    return <div ref={playerRef} />;
+    return <div ref={playerRef} style={{ width: "100%", aspectRatio: "16/9" }} />;
 };
 
 
@@ -135,7 +159,14 @@ function AP({ ws }) {
             // }
         });
         if (ws.setting.subtitles) {
-            player.subtitle.url = ws.setting.subtitles
+            subtitle(ws.setting.subtitles).then((e) => {
+                // player.subtitle.url = e
+                if (window.ass) { window.ass.destroy() }
+                window.ass = new ASS(e, player.video, { container: player.video.parentElement })
+                window.ass.container.getElementsByClassName("ASS-stage")[0].style.zIndex = 1
+                window.ass.video.style.zIndex = 0
+                player.on("resize", () => { window.ass.resize() })
+            })
         }
 
         function notice(msg) {
@@ -190,7 +221,7 @@ function AP({ ws }) {
         };
     }, []);
 
-    return <div className='mdui-container' style={{ width: "100%", height: 600, display: "flex" }} ref={artRef}>
+    return <div className='mdui-container' style={{ width: "100%", aspectRatio: "16/9" }} ref={artRef}>
     </div>
 }
 

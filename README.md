@@ -12,9 +12,11 @@
 
 - [ ] DPlayer弹幕
 
-- [ ] DPlayer字幕
+- [x] DPlayer ASS字幕
 
-- [x] Artplayer字幕
+- [ ] Artplayer 视频窗口在抽屉栏之上`zIndex`的问题
+
+- [x] Artplayer ASS字幕
 
 - [x] Artplayer弹幕
 
@@ -24,7 +26,7 @@
 
 - [x] WS断线重连
 
-### 学习记录
+## 学习记录
 
 顺便学习React(?)
 
@@ -128,3 +130,52 @@ onmessage = (msg) => {
 const sleep = (delay) => new Promise((resolve) => setTimeout(resolve, delay))
 ```
 使用暴力`sleep(1000)`去强行等待初始化完成
+
+### ASS.js学习记录
+
+这个库，可比react还要神奇，鉴于真的没有官方说明文档，以下所有东西都是瞎几把摸索
+
+> [https://github.com/weizhenye/ASS](https://github.com/weizhenye/ASS)
+>
+> [https://ass.js.org/](https://ass.js.org/)
+
+0. **基础使用方式**
+
+```js
+ass = new ASS(e, player.video, { container: player.video.parentElement})
+//e代表ass文件内容，直接通过fetch请求之后塞给构造函数即可
+//player代表播放器对象，player.video就是视频元素咯，ASS.js将用于时间戳绑定(大概)
+//container代表要显示到的容器元素
+```
+
+1. **以DPlayer为例**
+
+使用上述的方式，确实可以正常显示ASS字幕，但是一旦切换播放器大小(比如全屏之类的)就会出大病，于是乎就有了如下的暴力解决方案
+```js
+const resize = () => {
+    document.getElementsByClassName("dplayer-video-wrap")[0].style.width = "100%"
+    document.getElementsByClassName("dplayer-video-wrap")[0].style.height = ""
+    document.getElementsByClassName("dplayer-video-wrap")[0].style.aspectRatio = "16/9"
+    window.ass.resize()
+}
+player.on("resize", () => {
+    setTimeout(resize, 300)
+    setTimeout(resize, 1000)
+})
+```
+不是很美观，但是有效，如果不在意性能消耗可以再多来几个setTimeout
+
+2. **以ArtPlayer为例**
+
+具体情况具体分析，此时播放器的大小改版影响不大，直接挂钩子上去就能解决问题
+
+但是，和DPlayer不一样，实操时，字幕元素位于Artplayer.video的后方，故如下修改zIndex
+
+但这多多少少会影响一些其他的问题，比如视频框浮到了别的元素之上，不过这解决也就一个时间问题
+
+```js
+window.ass = new ASS(e, player.video, { container: player.video.parentElement })
+window.ass.container.getElementsByClassName("ASS-stage")[0].style.zIndex = 1
+window.ass.video.style.zIndex = 0
+player.on("resize", () => { window.ass.resize() })
+```
