@@ -6,8 +6,6 @@ import { ConfigUI, Waiting, Sysytem } from './config';
 import 'mdui/dist/css/mdui.min.css';
 import 'mdui/dist/js/mdui.min.js';
 import './console.css'
-import testASS from './test';
-import TestASS from './test';
 
 
 const App = () => {
@@ -60,7 +58,6 @@ const App = () => {
         : <></>
       }
       {ws.Init ? <LeaveRoom ws={ws} Auto={Auto} /> : <></>}
-      {/* <TestASS /> */}
     </div>
   );
 };

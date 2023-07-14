@@ -4,10 +4,24 @@ import Artplayer from 'artplayer';
 import artplayerPluginDanmuku from 'artplayer-plugin-danmuku';
 import ASS from 'assjs';
 
+/**
+ * @param {URL} url 
+ * @return {string} 
+ */
 async function subtitle(url) {
     var r = await fetch(url)
     return await r.text()
     // return URL.createObjectURL(new Blob([r], { type: "text/plain" }))
+}
+
+/**
+ * @param {URL} url 
+ * @return {string} 
+ */
+function get_id(url) {
+    var id = new URL(url).searchParams.get("UniqueId")
+    if (id == null) { var id = "0000000" }
+    return id
 }
 
 const DP = ({ ws }) => {
@@ -15,8 +29,7 @@ const DP = ({ ws }) => {
     // const [dp, setdp] = useState(null)
 
     useEffect(() => {
-        var id = new URL(ws.setting.url).searchParams.get("UniqueId")
-        if (id == null) { var id = "0000000" }
+        var id = get_id(ws.setting.url)
         const player = new DPlayer({
             container: playerRef.current,
             video: {
@@ -106,8 +119,7 @@ function AP({ ws }) {
     }
 
     useEffect(() => {
-        var id = new URL(ws.setting.url).searchParams.get("UniqueId")
-        if (id == null) { var id = "0000000" }
+        var id = get_id(ws.setting.url)
 
         const player = new Artplayer({
             container: artRef.current,
@@ -184,6 +196,7 @@ function AP({ ws }) {
             player._play = () => { player.video._play() }
             player._pause = () => { player.video._pause() }
             player._seek = (t) => { player.video.currentTime = t }
+            player._speed = (t) => { player.video.playbackRate = t }
             player.video.play = ban
             player.video.pause = ban
             // player.video.fastSeek = ban

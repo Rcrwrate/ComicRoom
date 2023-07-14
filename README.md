@@ -18,6 +18,8 @@
 
 - [x] Artplayer ASS字幕
 
+- [ ] Artplayer ASS字幕在某些时候无法正常显示（应该是前一个ASS元素未被销毁导致的问题）
+
 - [x] Artplayer弹幕
 
 - [x] 支持多种播放器
@@ -31,6 +33,8 @@
 顺便学习React(?)
 
 有一说一，React有点过于神秘(确信)
+
+### React一番细嗦
 
 具体举个例子，我还是不是很懂
 
@@ -77,7 +81,7 @@ PS: No.1和No.2视为同一种方案，实践中只使用了No.2
 更有甚者，二者接不需要
 
 
-### 二番细嗦
+### React二番细嗦
 
 我在翻了一遍文档之后，发现了真相(**总结：切忌不看文档就上手!**)
 
@@ -130,6 +134,8 @@ onmessage = (msg) => {
 const sleep = (delay) => new Promise((resolve) => setTimeout(resolve, delay))
 ```
 使用暴力`sleep(1000)`去强行等待初始化完成
+
+**最终的问题出现了，这个不符合官方规范的问题到底要不要修**
 
 ### ASS.js学习记录
 
