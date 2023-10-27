@@ -1,5 +1,5 @@
 const config = {
-    wsUrl: "wss://124.222.180.82/comic"
+    wsUrl: "wss://service-av2jrwkk-1258642780.hk.apigw.tencentcs.com/WSS"
     // wsUrl: "ws://127.0.0.1:8080"
 }
 
