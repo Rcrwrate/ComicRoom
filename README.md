@@ -30,6 +30,9 @@
 
 ## 学习记录
 
+<details>
+<summary>旧日志</summary>
+  
 顺便学习React(?)
 
 有一说一，React有点过于神秘(确信)
@@ -136,6 +139,20 @@ const sleep = (delay) => new Promise((resolve) => setTimeout(resolve, delay))
 使用暴力`sleep(1000)`去强行等待初始化完成
 
 **最终的问题出现了，这个不符合官方规范的问题到底要不要修**
+
+</details>
+
+### React三番细嗦
+
+时隔不知道多久终于找到解决方案了，这个问题源自于React的设计(这是合理的，不合理的是我)，就下边这句话
+
+[调用 `set` 函数 **不能改变运行中代码的状态**](https://zh-hans.react.dev/reference/react/useState#ive-updated-the-state-but-logging-gives-me-the-old-value)
+
+在处理`Effect`以及一些其他函数以外调用`set`函数会导致这个问题，同时仅限同步的情况下，异步以及callback依旧会导致问题
+
+也有解决方案，在调用`set`函数时传递一个箭头函数`(prev) => prev`
+
+怎么说呢我以前确实没怎么想，主打一个暴力，当然现在日志写在这了，代码那懒得动了，能跑就行。鉴定为屎山
 
 ### ASS.js学习记录
 
